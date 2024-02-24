@@ -33,8 +33,8 @@ table inet my_table {
         ct state {established, related} counter accept
         ct state invalid counter drop
         
-        tcp dport {http,16653,https} counter accept
-        udp dport {http,16653,https} counter accept
+        tcp dport {http,https} counter accept
+        udp dport {http,https} counter accept
         
         tcp flags syn tcp dport $(cat /etc/ssh/sshd_config | grep -oE "^Port [0-9]*$" | grep -oE "[0-9]*" || echo 22) meter aaameter { ip saddr ct count over 20 } add @blackhole { ip saddr } counter drop
         tcp flags syn tcp dport $(cat /etc/ssh/sshd_config | grep -oE "^Port [0-9]*$" | grep -oE "[0-9]*" || echo 22) meter bbbmeter { ip saddr limit rate over 20/hour } add @blackhole { ip saddr } counter drop
