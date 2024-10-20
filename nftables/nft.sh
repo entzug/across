@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Usage: bash <(curl -s https://raw.githubusercontent.com/azoway/across/main/nftables/nft.sh)
+# Usage: bash <(curl -s https://raw.githubusercontent.com/entzug/across/main/nftables/nft.sh)
 # Wiki: debian nftables https://wiki.archlinux.org/index.php/Nftables
 
 # dependencies
@@ -33,8 +33,8 @@ table inet my_table {
         ct state {established, related} counter accept
         ct state invalid counter drop
         
-        tcp dport {http, https} counter accept
-        udp dport {http, https} counter accept
+        tcp dport {http, https,40000} counter accept
+        udp dport {http, https,40000} counter accept
         
         tcp flags syn tcp dport $(cat /etc/ssh/sshd_config | grep -oE "^Port [0-9]*$" | grep -oE "[0-9]*" || echo 22) meter aaameter { ip saddr ct count over 20 } add @blackhole { ip saddr } counter drop
         tcp flags syn tcp dport $(cat /etc/ssh/sshd_config | grep -oE "^Port [0-9]*$" | grep -oE "[0-9]*" || echo 22) meter bbbmeter { ip saddr limit rate over 20/hour } add @blackhole { ip saddr } counter drop
