@@ -103,5 +103,3 @@ function main(){
 }
 
 main
-
-x1.00
